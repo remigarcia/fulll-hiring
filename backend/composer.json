@@ -1,0 +1,24 @@
+{
+    "name": "remigarcia/fulll-hiring-backend",
+    "description": "Fulll hiring test — vehicle fleet parking management (DDD & CQRS)",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.5"
+    },
+    "require-dev": {
+        "behat/behat": "^3.14"
+    },
+    "autoload": {
+        "psr-4": {
+            "Fulll\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Fulll\\Features\\": "features/bootstrap/"
+        }
+    },
+    "scripts": {
+        "test": "behat"
+    }
+}
