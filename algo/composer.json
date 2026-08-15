@@ -1,0 +1,24 @@
+{
+    "name": "remigarcia/fulll-hiring-algo",
+    "description": "Fulll hiring test — FizzBuzz",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^12"
+    },
+    "autoload": {
+        "psr-4": {
+            "Fulll\\Algo\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Fulll\\Algo\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
+}
