@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Fulll\Algo\FizzBuzz;
+
+$argument = $argv[1] ?? null;
+
+if ($argument === null || preg_match('/^\d+$/', $argument) !== 1 || (int) $argument < 1) {
+    fwrite(STDERR, "Usage: fizzbuzz <N> (integer >= 1)\n");
+    exit(1);
+}
+
+foreach ((new FizzBuzz())->sequence((int) $argument) as $line) {
+    echo $line, "\n";
+}
