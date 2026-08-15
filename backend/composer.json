@@ -6,7 +6,9 @@
         "php": ">=8.5"
     },
     "require-dev": {
-        "behat/behat": "^3.14"
+        "behat/behat": "^3.14",
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "phpstan/phpstan": "^2.2"
     },
     "autoload": {
         "psr-4": {
@@ -19,6 +21,14 @@
         }
     },
     "scripts": {
-        "test": "behat"
+        "test": "behat",
+        "stan": "phpstan analyse",
+        "cs:check": "php-cs-fixer check --diff",
+        "cs:fix": "php-cs-fixer fix",
+        "qa": [
+            "@cs:check",
+            "@stan",
+            "@test"
+        ]
     }
 }
