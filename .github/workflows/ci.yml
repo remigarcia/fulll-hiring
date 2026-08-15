@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  algo:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: algo
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: none
+      - uses: ramsey/composer-install@v3
+        with:
+          working-directory: algo
+      - run: composer qa
