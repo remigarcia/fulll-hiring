@@ -36,6 +36,8 @@ composer qa                 # cs:check + stan + test (also: docker build --targe
 composer db:init            # (re)apply the SQL schema
 ```
 
+Note: `test:integration` truncates the local database between scenarios.
+
 ## Architecture
 
 ```
@@ -67,7 +69,7 @@ Worth adding:
 
 ## Step 3 — CI/CD in a few words
 
-CI ([workflow](../.github/workflows/ci.yml), runs on every push/PR): checkout → PHP 8.5 setup →
+CI ([workflow](../.github/workflows/ci.yml), runs on every push to `main` and every PR): checkout → PHP 8.5 setup →
 cached `composer install` → `composer qa` → schema + `@critical` scenarios against a PostgreSQL
 service container. CD would follow: build the runtime Docker image, tag it with the commit SHA,
 push to a registry, deploy staging then production with schema migrations applied before rollout.

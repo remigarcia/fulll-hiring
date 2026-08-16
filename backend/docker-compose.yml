@@ -18,6 +18,7 @@ services:
 
     cli:
         build: .
+        profiles: ['tools']
         environment:
             DATABASE_URL: postgres://fleet:fleet@postgres:5432/fleet
         depends_on:
