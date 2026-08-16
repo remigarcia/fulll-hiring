@@ -4,3 +4,4 @@ parameters:
         - src
         - features/bootstrap
         - bin/init-db
+        - fleet

@@ -5,7 +5,8 @@
     "require": {
         "php": ">=8.5",
         "ext-pdo": "*",
-        "ext-pdo_pgsql": "*"
+        "ext-pdo_pgsql": "*",
+        "symfony/console": "^7.4"
     },
     "require-dev": {
         "behat/behat": "^3.14",

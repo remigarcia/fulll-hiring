@@ -1,0 +1,45 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Fulll\App\Fleet\Command\CreateFleetHandler;
+use Fulll\App\Fleet\Command\RegisterVehicleHandler;
+use Fulll\App\Vehicle\Command\ParkVehicleHandler;
+use Fulll\Infra\Cli\CreateFleetCliCommand;
+use Fulll\Infra\Cli\LocalizeVehicleCliCommand;
+use Fulll\Infra\Cli\RegisterVehicleCliCommand;
+use Fulll\Infra\Postgres\PostgresFleetRepository;
+use Fulll\Infra\Postgres\PdoConnectionFactory;
+use Fulll\Infra\Postgres\PostgresVehicleRepository;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+
+try {
+    $pdo = PdoConnectionFactory::fromEnv();
+} catch (PDOException $exception) {
+    fwrite(STDERR, sprintf("Database connection failed: %s\n", $exception->getMessage()));
+    exit(1);
+}
+$fleetRepository = new PostgresFleetRepository($pdo);
+$vehicleRepository = new PostgresVehicleRepository($pdo);
+
+$application = new Application('fleet');
+$application->addCommands([
+    new CreateFleetCliCommand(new CreateFleetHandler($fleetRepository)),
+    new RegisterVehicleCliCommand(new RegisterVehicleHandler($fleetRepository, $vehicleRepository)),
+    new LocalizeVehicleCliCommand(new ParkVehicleHandler($fleetRepository, $vehicleRepository)),
+]);
+
+// Negative coordinates (-33.86...) would be parsed as options: insert the
+// end-of-options separator before the first negative number.
+/** @var list<string> $argv */
+$argv = $_SERVER['argv'];
+$firstNegative = array_find_key($argv, fn(string $token) => preg_match('/^-\d/', $token) === 1);
+if ($firstNegative !== null && !in_array('--', $argv, true)) {
+    array_splice($argv, $firstNegative, 0, ['--']);
+}
+
+$application->run(new ArgvInput($argv));

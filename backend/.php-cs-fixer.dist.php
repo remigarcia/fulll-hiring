@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 $finder = (new PhpCsFixer\Finder())
     ->in([__DIR__ . '/src', __DIR__ . '/features/bootstrap'])
-    ->append([__DIR__ . '/bin/init-db']);
+    ->append([__DIR__ . '/bin/init-db', __DIR__ . '/fleet']);
 
 return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)

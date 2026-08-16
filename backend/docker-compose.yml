@@ -14,3 +14,11 @@ services:
             interval: 5s
             timeout: 5s
             retries: 10
+
+    cli:
+        build: .
+        environment:
+            DATABASE_URL: postgres://fleet:fleet@postgres:5432/fleet
+        depends_on:
+            postgres:
+                condition: service_healthy
