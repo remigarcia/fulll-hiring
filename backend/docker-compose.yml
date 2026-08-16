@@ -9,6 +9,7 @@ services:
             - '5432:5432'
         volumes:
             - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+            - pgdata:/var/lib/postgresql/data
         healthcheck:
             test: ['CMD-SHELL', 'pg_isready -U fleet']
             interval: 5s
@@ -22,3 +23,6 @@ services:
         depends_on:
             postgres:
                 condition: service_healthy
+
+volumes:
+    pgdata:
