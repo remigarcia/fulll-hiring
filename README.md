@@ -1,5 +1,7 @@
 # Fulll — hiring tests
 
+[![CI](https://github.com/remigarcia/fulll-hiring/actions/workflows/ci.yml/badge.svg)](https://github.com/remigarcia/fulll-hiring/actions/workflows/ci.yml)
+
 - [algo/](algo) — FizzBuzz (PHP)
 - [backend/](backend) — Vehicle fleet parking management (PHP, DDD & CQRS)
 
