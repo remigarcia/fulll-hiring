@@ -3,3 +3,4 @@ parameters:
     paths:
         - src
         - features/bootstrap
+        - bin/init-db

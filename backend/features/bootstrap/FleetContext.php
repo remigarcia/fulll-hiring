@@ -22,8 +22,13 @@ use Fulll\Domain\Vehicle\Exception\VehicleAlreadyParkedException;
 use Fulll\Domain\Fleet\Exception\VehicleAlreadyRegisteredException;
 use Fulll\Domain\Fleet\FleetId;
 use Fulll\Domain\Vehicle\Location;
-use Fulll\Infra\Fleet\InMemoryFleetRepository;
-use Fulll\Infra\Vehicle\InMemoryVehicleRepository;
+use Fulll\Domain\Fleet\FleetRepositoryInterface;
+use Fulll\Domain\Vehicle\VehicleRepositoryInterface;
+use Fulll\Infra\InMemory\InMemoryFleetRepository;
+use Fulll\Infra\Postgres\PostgresFleetRepository;
+use Fulll\Infra\Postgres\PdoConnectionFactory;
+use Fulll\Infra\InMemory\InMemoryVehicleRepository;
+use Fulll\Infra\Postgres\PostgresVehicleRepository;
 
 final class FleetContext implements Context
 {
@@ -39,16 +44,32 @@ final class FleetContext implements Context
     private ?Location $location = null;
     private ?\DomainException $caughtException = null;
 
-    public function __construct()
+    public function __construct(string $driver = 'memory')
     {
-        $fleetRepository = new InMemoryFleetRepository();
-        $vehicleRepository = new InMemoryVehicleRepository();
+        [$fleetRepository, $vehicleRepository] = match ($driver) {
+            'memory' => [new InMemoryFleetRepository(), new InMemoryVehicleRepository()],
+            'postgres' => self::postgresRepositories(),
+            default => throw new \InvalidArgumentException(sprintf("Unknown driver '%s'.", $driver)),
+        };
 
         $this->createFleet = new CreateFleetHandler($fleetRepository);
         $this->registerVehicle = new RegisterVehicleHandler($fleetRepository, $vehicleRepository);
         $this->parkVehicle = new ParkVehicleHandler($fleetRepository, $vehicleRepository);
         $this->isVehicleRegistered = new IsVehicleRegisteredHandler($fleetRepository);
         $this->getVehicleLocation = new GetVehicleLocationHandler($vehicleRepository);
+    }
+
+    /**
+     * Behat builds a fresh context per scenario: truncating here isolates scenarios on the shared database.
+     *
+     * @return array{FleetRepositoryInterface, VehicleRepositoryInterface}
+     */
+    private static function postgresRepositories(): array
+    {
+        $pdo = PdoConnectionFactory::fromEnv();
+        $pdo->exec('TRUNCATE fleet_vehicles, fleets, vehicles');
+
+        return [new PostgresFleetRepository($pdo), new PostgresVehicleRepository($pdo)];
     }
 
     #[Given('my fleet')]

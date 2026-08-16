@@ -3,3 +3,13 @@ default:
         default:
             contexts:
                 - Fulll\Features\FleetContext
+
+# Critical scenarios replayed against the real PostgreSQL infrastructure.
+integration:
+    suites:
+        default:
+            filters:
+                tags: '@critical'
+            contexts:
+                - Fulll\Features\FleetContext:
+                      driver: postgres

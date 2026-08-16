@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Fulll\Infra\Fleet;
+namespace Fulll\Infra\InMemory;
 
 use Fulll\Domain\Fleet\Fleet;
 use Fulll\Domain\Fleet\FleetId;

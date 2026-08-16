@@ -3,7 +3,9 @@
     "description": "Fulll hiring test — vehicle fleet parking management (DDD & CQRS)",
     "license": "proprietary",
     "require": {
-        "php": ">=8.5"
+        "php": ">=8.5",
+        "ext-pdo": "*",
+        "ext-pdo_pgsql": "*"
     },
     "require-dev": {
         "behat/behat": "^3.14",
@@ -22,6 +24,8 @@
     },
     "scripts": {
         "test": "behat",
+        "test:integration": "behat --profile integration",
+        "db:init": "@php bin/init-db",
         "stan": "phpstan analyse",
         "cs:check": "php-cs-fixer check --diff",
         "cs:fix": "php-cs-fixer fix",

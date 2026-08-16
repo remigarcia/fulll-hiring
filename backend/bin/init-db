@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Fulll\Infra\Postgres\PdoConnectionFactory;
+
+$schema = file_get_contents(__DIR__ . '/../schema.sql');
+if ($schema === false) {
+    fwrite(STDERR, "Cannot read schema.sql\n");
+    exit(1);
+}
+
+PdoConnectionFactory::fromEnv()->exec($schema);
+echo "Schema applied.\n";

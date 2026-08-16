@@ -27,6 +27,27 @@ final class Fleet
         return new self(FleetId::generate(), $userId);
     }
 
+    /**
+     * @param list<string> $plateNumbers
+     */
+    public static function rehydrate(FleetId $id, string $userId, array $plateNumbers): self
+    {
+        $fleet = new self($id, $userId);
+        foreach ($plateNumbers as $plateNumber) {
+            $fleet->vehiclePlates[$plateNumber] = true;
+        }
+
+        return $fleet;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function vehiclePlateNumbers(): array
+    {
+        return array_keys($this->vehiclePlates);
+    }
+
     public function id(): FleetId
     {
         return $this->id;

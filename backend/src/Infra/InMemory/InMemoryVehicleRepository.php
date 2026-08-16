@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Fulll\Infra\Vehicle;
+namespace Fulll\Infra\InMemory;
 
 use Fulll\Domain\Vehicle\PlateNumber;
 use Fulll\Domain\Vehicle\Vehicle;
