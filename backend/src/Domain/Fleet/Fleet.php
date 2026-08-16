@@ -34,7 +34,7 @@ final class Fleet
     {
         $fleet = new self($id, $userId);
         foreach ($plateNumbers as $plateNumber) {
-            $fleet->vehiclePlates[$plateNumber] = true;
+            $fleet->vehiclePlates[new PlateNumber($plateNumber)->value()] = true;
         }
 
         return $fleet;

@@ -6,7 +6,6 @@ namespace Fulll\Infra\Cli;
 
 use Fulll\App\Vehicle\Command\ParkVehicleCommand;
 use Fulll\App\Vehicle\Command\ParkVehicleHandler;
-use Fulll\Domain\Fleet\Exception\FleetNotFoundException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -57,7 +56,7 @@ final class LocalizeVehicleCliCommand extends Command
                 (float) $longitude,
                 $altitude !== null ? (float) $altitude : null,
             ));
-        } catch (\DomainException|\InvalidArgumentException|FleetNotFoundException $exception) {
+        } catch (\DomainException|\InvalidArgumentException $exception) {
             $output->writeln(sprintf('<error>%s</error>', $exception->getMessage()));
 
             return Command::FAILURE;

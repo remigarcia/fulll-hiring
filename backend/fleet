@@ -19,7 +19,7 @@ use Symfony\Component\Console\Input\ArgvInput;
 
 try {
     $pdo = PdoConnectionFactory::fromEnv();
-} catch (PDOException $exception) {
+} catch (PDOException|InvalidArgumentException $exception) {
     fwrite(STDERR, sprintf("Database connection failed: %s\n", $exception->getMessage()));
     exit(1);
 }
@@ -27,11 +27,9 @@ $fleetRepository = new PostgresFleetRepository($pdo);
 $vehicleRepository = new PostgresVehicleRepository($pdo);
 
 $application = new Application('fleet');
-$application->addCommands([
-    new CreateFleetCliCommand(new CreateFleetHandler($fleetRepository)),
-    new RegisterVehicleCliCommand(new RegisterVehicleHandler($fleetRepository, $vehicleRepository)),
-    new LocalizeVehicleCliCommand(new ParkVehicleHandler($fleetRepository, $vehicleRepository)),
-]);
+$application->addCommand(new CreateFleetCliCommand(new CreateFleetHandler($fleetRepository)));
+$application->addCommand(new RegisterVehicleCliCommand(new RegisterVehicleHandler($fleetRepository, $vehicleRepository)));
+$application->addCommand(new LocalizeVehicleCliCommand(new ParkVehicleHandler($fleetRepository, $vehicleRepository)));
 
 // Negative coordinates (-33.86...) would be parsed as options: insert the
 // end-of-options separator before the first negative number.

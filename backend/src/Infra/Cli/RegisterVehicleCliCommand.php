@@ -6,7 +6,6 @@ namespace Fulll\Infra\Cli;
 
 use Fulll\App\Fleet\Command\RegisterVehicleCommand;
 use Fulll\App\Fleet\Command\RegisterVehicleHandler;
-use Fulll\Domain\Fleet\Exception\FleetNotFoundException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,7 +35,7 @@ final class RegisterVehicleCliCommand extends Command
 
         try {
             ($this->registerVehicle)(new RegisterVehicleCommand($fleetId, $plateNumber));
-        } catch (\DomainException|\InvalidArgumentException|FleetNotFoundException $exception) {
+        } catch (\DomainException|\InvalidArgumentException $exception) {
             $output->writeln(sprintf('<error>%s</error>', $exception->getMessage()));
 
             return Command::FAILURE;

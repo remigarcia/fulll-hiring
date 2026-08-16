@@ -6,7 +6,7 @@ namespace Fulll\Domain\Fleet\Exception;
 
 use Fulll\Domain\Fleet\FleetId;
 
-final class FleetNotFoundException extends \RuntimeException
+final class FleetNotFoundException extends \DomainException
 {
     public function __construct(FleetId $fleetId)
     {
