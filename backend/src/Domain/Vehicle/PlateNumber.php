@@ -6,11 +6,16 @@ namespace Fulll\Domain\Vehicle;
 
 final class PlateNumber
 {
-    public function __construct(private readonly string $value)
+    private readonly string $value;
+
+    public function __construct(string $value)
     {
-        if (trim($value) === '') {
+        $normalized = strtoupper(trim($value));
+        if ($normalized === '') {
             throw new \InvalidArgumentException('Plate number cannot be empty.');
         }
+
+        $this->value = $normalized;
     }
 
     public function value(): string

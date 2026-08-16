@@ -16,7 +16,11 @@ final class Fleet
     private function __construct(
         private readonly FleetId $id,
         private readonly string $userId,
-    ) {}
+    ) {
+        if (trim($userId) === '') {
+            throw new \InvalidArgumentException('User id cannot be empty.');
+        }
+    }
 
     public static function create(string $userId): self
     {
